@@ -34,7 +34,7 @@
 
 // Implicitly-declared special member functions do the right thing.
 
-class datum_string
+class LMI_SO datum_string
     :public datum_base
     ,private boost::equality_comparable<datum_string,datum_string>
 {
