@@ -153,10 +153,6 @@ jobs:
           </configurable_settings>
           EOF
 
-          # Create empty `schroot_env` file to suppress `shellcheck` error:
-          # SC1091: Not following: /tmp/schroot_env: openBinaryFile: does not exist (No such file or directory)
-          touch /tmp/schroot_env
-
           # Create the symbolic link to pass `check_concinnity` tests.
           ln -s $GITHUB_WORKSPACE /opt/lmi/src/lmi
 
