@@ -175,6 +175,9 @@ class application_test final
     // Used to check if distribution tests should be enabled.
     bool is_distribution_test() const { return is_distribution_test_; }
 
+    // Returns the exit code based of tests results.
+    int get_exit_code() const { return exit_code_; }
+
   private:
     application_test() = default;
     application_test(application_test const&) = delete;
@@ -231,6 +234,8 @@ class application_test final
     bool run_all_              {true};
 
     bool is_distribution_test_ {false};
+
+    int  exit_code_            {EXIT_FAILURE};
 };
 
 application_test& application_test::instance()
@@ -508,6 +513,8 @@ TestsResults application_test::run()
                 }
             }
         }
+
+    exit_code_ = results.failed == 0 ? EXIT_SUCCESS : EXIT_FAILURE;
 
     return results;
 }
@@ -932,5 +939,12 @@ int main(int argc, char* argv[])
         return 0;
         }
 
-    return wxEntry(argc, argv);
+    int exit_code = wxEntry(argc, argv);
+
+    // If the application exited successfully then return the exit code
+    // based on test results.
+    if(exit_code == 0) {
+        exit_code = application_test::instance().get_exit_code();
+    }
+    return exit_code;
 }
