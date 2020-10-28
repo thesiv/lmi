@@ -37,8 +37,11 @@
 #include <wx/app.h>
 #include <wx/timer.h>
 
+#include <memory>
 #include <string>
 #include <vector>
+
+using wxTimerPtr = std::unique_ptr<wxTimer>;
 
 class DocManagerEx;
 class ViewEx;
@@ -138,7 +141,7 @@ class Skeleton
     wxConfigBase*         config_;
     DocManagerEx*         doc_manager_;
     wxDocMDIParentFrame*  frame_;
-    wxTimer               timer_;
+    wxTimerPtr            timer_;
 
     DECLARE_EVENT_TABLE()
 };

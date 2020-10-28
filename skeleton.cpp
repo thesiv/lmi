@@ -200,15 +200,13 @@ Skeleton::Skeleton()
     :config_          {nullptr}
     ,doc_manager_     {nullptr}
     ,frame_           {nullptr}
-    ,timer_           {this}
+    ,timer_           {nullptr}
 {
     SetAppName("lmi_wx");
 
     SetAppDisplayName("lmi...");
 
     SetVendorName("lmi");
-    config_ = wxConfigBase::Get();
-    timer_.Start(100);
 }
 
 wxMDIChildFrame* Skeleton::CreateChildFrame
@@ -652,6 +650,11 @@ bool Skeleton::OnInit()
 {
     try
         {
+        timer_.reset(new(wx) wxTimer(this));
+        timer_->Start(100);
+
+        config_ = wxConfigBase::Get();
+
 #if defined __WXMSW__
         // Send log messages of debug (and trace, which are roughly equivalent
         // to debug) severity, which are usually not shown at all under MSW, to
