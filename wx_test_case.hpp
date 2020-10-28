@@ -27,6 +27,7 @@
 #include <boost/filesystem/path.hpp>
 
 #include <wx/uiaction.h>
+#include <wx/utils.h>
 
 /// Base class for the test case objects.
 ///
@@ -151,5 +152,14 @@ class UIActionSimulator
   private:
     wxUIActionSimulator sim_;
 };
+
+inline void wait_and_yield(int iterations = 10, int milliseconds = 50)
+{
+    for(int i = 0; i < iterations; ++i)
+        {
+        wxYield();
+        wxMilliSleep(milliseconds);
+        }
+}
 
 #endif // wx_test_case_hpp
