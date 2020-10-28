@@ -34,7 +34,9 @@
 #include "wx_test_case.hpp"
 #include "wx_test_new.hpp"
 
+#include <wx/apptrait.h>
 #include <wx/docview.h>
+#include <wx/evtloop.h>
 #include <wx/fileconf.h>
 #include <wx/frame.h>
 #include <wx/init.h>                    // wxEntry()
@@ -637,6 +639,29 @@ wxWindow* wx_test_focus_controller_child(MvcController& dialog, char const* name
     return w;
 }
 
+// The event loop which can disable wxYield().
+class TestEventLoop final
+    :public wxEventLoop
+{
+  public:
+    void EnableYield(bool enabled)
+    {
+        yield_enabled_ = enabled;
+    }
+
+  protected:
+    void DoYieldFor(long eventsToProcess) override
+    {
+        if(!yield_enabled_)
+            return;
+
+        wxEventLoop::DoYieldFor(eventsToProcess);
+    }
+
+  private:
+    bool yield_enabled_ = true;
+};
+
 // Application to drive the tests
 class SkeletonTest final : public Skeleton
 {
@@ -644,6 +669,11 @@ class SkeletonTest final : public Skeleton
     SkeletonTest()
         :is_running_tests_ {false}
     {
+    }
+
+    void EnableYield(bool enabled)
+    {
+        static_cast<TestEventLoop*>(m_mainLoop)->EnableYield(enabled);
     }
 
   protected:
@@ -662,6 +692,7 @@ class SkeletonTest final : public Skeleton
         ,wxChar const* cond
         ,wxChar const* msg
         ) override;
+    wxAppTraits* CreateTraits() override;
 
   private:
     void RunTheTests();
@@ -915,6 +946,112 @@ void SkeletonTest::RunTheTests()
             << std::endl
             ;
         }
+}
+
+wxAppTraits* SkeletonTest::CreateTraits()
+{
+    class TestTraits final
+        : public wxGUIAppTraits
+    {
+      public:
+        wxEventLoopBase *CreateEventLoop() override
+        {
+            return new TestEventLoop();
+        }
+    };
+    return new TestTraits();
+}
+
+namespace
+{
+
+class YieldGuard
+{
+  public:
+    YieldGuard()
+    {
+        static_cast<SkeletonTest*>(wxTheApp)->EnableYield(false);
+    }
+
+    ~YieldGuard()
+    {
+        static_cast<SkeletonTest*>(wxTheApp)->EnableYield(true);
+    }
+};
+
+} // Unnamed namespace.
+
+bool UIActionSimulator::MouseMove(long x, long y)
+{
+    YieldGuard guard;
+    return sim_.MouseMove(x, y);
+}
+
+bool UIActionSimulator::MouseMove(const wxPoint& point)
+{
+    YieldGuard guard;
+    return sim_.MouseMove(point);
+}
+
+bool UIActionSimulator::MouseDown(int button)
+{
+    YieldGuard guard;
+    return sim_.MouseDown(button);
+}
+
+bool UIActionSimulator::MouseUp(int button)
+{
+    YieldGuard guard;
+    return sim_.MouseUp(button);
+}
+
+bool UIActionSimulator::MouseClick(int button)
+{
+    YieldGuard guard;
+    return sim_.MouseClick(button);
+}
+
+bool UIActionSimulator::MouseDblClick(int button)
+{
+    YieldGuard guard;
+    return sim_.MouseDblClick(button);
+}
+
+bool UIActionSimulator::MouseDragDrop(long x1, long y1, long x2, long y2,
+                                      int button)
+{
+    YieldGuard guard;
+    return sim_.MouseDragDrop(x1, y1, x2, y2, button);
+}
+
+bool UIActionSimulator::KeyDown(int keycode, int modifiers)
+{
+    YieldGuard guard;
+    return sim_.KeyDown(keycode, modifiers);
+}
+
+bool UIActionSimulator::KeyUp(int keycode, int modifiers)
+{
+    YieldGuard guard;
+    return sim_.KeyUp(keycode, modifiers);
+}
+
+bool UIActionSimulator::Char(int keycode, int modifiers)
+{
+    YieldGuard guard;
+    return sim_.Char(keycode, modifiers);
+}
+
+bool UIActionSimulator::Select(const wxString& text)
+{
+    YieldGuard guard;
+    return sim_.Select(text);
+}
+
+bool UIActionSimulator::Text(const char* text)
+{
+    YieldGuard guard;
+    return sim_.Text(text);
 }
 
 /// Run automated GUI test.

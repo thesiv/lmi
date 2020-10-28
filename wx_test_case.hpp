@@ -26,6 +26,8 @@
 
 #include <boost/filesystem/path.hpp>
 
+#include <wx/uiaction.h>
+
 /// Base class for the test case objects.
 ///
 /// It is only supposed to be used by LMI_WX_TEST_CASE macro and not directly.
@@ -121,5 +123,33 @@ class wx_test_case_##name \
 }; \
 static wx_test_case_##name wx_test_case_##name##_instance; \
 void wx_test_case_##name::run()
+
+/// Encapsulate wx UI action simulator.
+///
+/// Disable wxYield() for the simulated actions to not stuck inside
+/// under GTK3.
+
+class UIActionSimulator
+{
+  public:
+    UIActionSimulator() = default;
+
+    bool MouseMove(long x, long y);
+    bool MouseMove(const wxPoint& point);
+    bool MouseDown(int button = wxMOUSE_BTN_LEFT);
+    bool MouseUp(int button = wxMOUSE_BTN_LEFT);
+    bool MouseClick(int button = wxMOUSE_BTN_LEFT);
+    bool MouseDblClick(int button = wxMOUSE_BTN_LEFT);
+    bool MouseDragDrop(long x1, long y1, long x2, long y2,
+                       int button = wxMOUSE_BTN_LEFT);
+    bool KeyDown(int keycode, int modifiers = wxMOD_NONE);
+    bool KeyUp(int keycode, int modifiers = wxMOD_NONE);
+    bool Char(int keycode, int modifiers = wxMOD_NONE);
+    bool Select(const wxString& text);
+    bool Text(const char* text);
+
+  private:
+    wxUIActionSimulator sim_;
+};
 
 #endif // wx_test_case_hpp
