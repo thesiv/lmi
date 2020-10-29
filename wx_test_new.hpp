@@ -55,7 +55,7 @@ class wx_test_new_illustration
     // Common part of both constructors.
     void do_new_illustration(wxModalExpectation const& e)
     {
-        wxUIActionSimulator ui;
+        UIActionSimulator ui;
         ui.Char('n', wxMOD_CONTROL);    // "File|New"
         ui.Char('i');                   // "Illustration"
 
@@ -77,7 +77,7 @@ class wx_test_new_census
   public:
     wx_test_new_census()
     {
-        wxUIActionSimulator ui;
+        UIActionSimulator ui;
         ui.Char('n', wxMOD_CONTROL);    // "File|New"
         ui.Char('c');                   // "Census"
         wxYield();

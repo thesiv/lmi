@@ -125,7 +125,7 @@ LMI_WX_TEST_CASE(input_sequences)
             wx_test_focus_controller_child(*dialog, field_name);
 
             // Type the sequence into it.
-            wxUIActionSimulator ui;
+            UIActionSimulator ui;
             ui.Text(test_data_.sequence);
             wxYield();
 
@@ -161,7 +161,7 @@ LMI_WX_TEST_CASE(input_sequences)
         input_sequence_test_data const& test_data_;
     };
 
-    wxUIActionSimulator ui;
+    UIActionSimulator ui;
     for(auto const& test : test_cases)
         {
         ui.Char('e', wxMOD_CONTROL); // "Illustration|Edit Cell"

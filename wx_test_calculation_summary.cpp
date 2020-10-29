@@ -94,7 +94,7 @@ class expect_preferences_dialog_base
 
     void run() const
         {
-        wxUIActionSimulator ui;
+        UIActionSimulator ui;
         ui.Char('f', wxMOD_CONTROL);    // "File|Preferences"
 
         wxTEST_DIALOG(wxYield(), *this);
@@ -144,7 +144,7 @@ class expect_preferences_dialog_base
             {
             use_checkbox_->SetFocus();
 
-            wxUIActionSimulator ui;
+            UIActionSimulator ui;
             ui.Char(WXK_SPACE);
             wxYield();
             }
@@ -335,7 +335,7 @@ LMI_WX_TEST_CASE(calculation_summary)
             {
             set_use_builtin_summary(false);
 
-            wxUIActionSimulator ui;
+            UIActionSimulator ui;
             for(int n = 0; n < total_number_of_columns; ++n)
                 {
                 focus_column_combobox(n);

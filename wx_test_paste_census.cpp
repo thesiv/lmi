@@ -236,7 +236,7 @@ LMI_WX_TEST_CASE(paste_census)
     wx_test_new_census census;
 
     // Paste data into it.
-    wxUIActionSimulator ui;
+    UIActionSimulator ui;
     ui.Char('s', wxMOD_CONTROL | wxMOD_SHIFT); // "Census | Paste census"
     wxYield();
 
@@ -290,7 +290,7 @@ LMI_WX_TEST_CASE(paste_census)
                 gender_radiobox = dynamic_cast<wxRadioBox*>(gender_window);
             LMI_ASSERT(gender_radiobox);
 
-            wxUIActionSimulator ui;
+            UIActionSimulator ui;
             // Select the last, "Unisex", radio button, by simulating
             // down-arrow twice: female --> male, then male --> unisex.
             ui.Char(WXK_DOWN);
@@ -360,7 +360,7 @@ LMI_WX_TEST_CASE(paste_census)
                 class_radiobox = dynamic_cast<wxRadioBox*>(class_window);
             LMI_ASSERT(class_radiobox);
 
-            wxUIActionSimulator ui;
+            UIActionSimulator ui;
             ui.Char(WXK_UP); // Select the first, "Preferred", radio button.
             wxYield();
 

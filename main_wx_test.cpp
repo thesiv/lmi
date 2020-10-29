@@ -870,7 +870,7 @@ void SkeletonTest::RunTheTests()
             break;
 
         // Try to close the dialog.
-        wxUIActionSimulator ui;
+        UIActionSimulator ui;
         ui.Char(WXK_ESCAPE);
         wxYield();
 

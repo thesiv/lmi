@@ -55,7 +55,7 @@ void do_test_create_open
 
     output_file_existence_checker output_file{file.ToStdString()};
 
-    wxUIActionSimulator z;
+    UIActionSimulator z;
     z.Char('n', wxMOD_CONTROL); // new file
     z.Char(key               ); // choose document type
     if(uses_dialog)

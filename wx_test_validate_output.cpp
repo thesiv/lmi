@@ -86,7 +86,7 @@ struct enter_comments_in_case_defaults_dialog
             comments_text = dynamic_cast<wxTextCtrl*>(comments_window);
         LMI_ASSERT(comments_text);
 
-        wxUIActionSimulator ui;
+        UIActionSimulator ui;
 
         // There could be an existing comment in this field, delete it first.
         // This does assume MSW-like key bindings.
@@ -116,7 +116,7 @@ void init_test_census
         ,std::string const& insured_name
         )
 {
-    wxUIActionSimulator ui;
+    UIActionSimulator ui;
 
     // Enter the special comment as well as the corporation name into the "case
     // defaults" dialog.
@@ -135,7 +135,7 @@ void init_test_census
 
             wx_test_focus_controller_child(*dialog, "CorporationName");
 
-            wxUIActionSimulator ui;
+            UIActionSimulator ui;
             ui.Text((corp_name_ + " Inc.").c_str());
             wxYield();
 
@@ -169,7 +169,7 @@ void init_test_census
 
             wx_test_focus_controller_child(*dialog, "InsuredName");
 
-            wxUIActionSimulator ui;
+            UIActionSimulator ui;
             ui.Text(insured_name_.c_str());
             wxYield();
 
@@ -242,7 +242,7 @@ void validate_run_case_output
         {
         static void perform()
             {
-                wxUIActionSimulator ui;
+                UIActionSimulator ui;
                 ui.Char('r', wxMOD_CONTROL | wxMOD_SHIFT); // "Census|Run case"
                 wxYield();
 
@@ -273,7 +273,7 @@ void validate_print_case_output
         {
         static void perform()
             {
-                wxUIActionSimulator ui;
+                UIActionSimulator ui;
                 // "Census|Print case to spreadsheet"
                 ui.Char('h', wxMOD_CONTROL | wxMOD_SHIFT);
                 wxYield();
@@ -306,7 +306,7 @@ void validate_print_roster_output
         {
         static void perform()
             {
-                wxUIActionSimulator ui;
+                UIActionSimulator ui;
 
                 // "Census|Print group roster..."
                 ui.Char('o', wxMOD_CONTROL | wxMOD_SHIFT);
@@ -342,7 +342,7 @@ void validate_run_cell_and_copy_output
         );
     output_file_existence_checker output_cell_trace(cell_trace_file);
 
-    wxUIActionSimulator ui;
+    UIActionSimulator ui;
 
     ui.Char(WXK_ESCAPE);              // Clear any selection.
     ui.Char(WXK_HOME, wxMOD_CONTROL); // Move focus to top row.
@@ -479,7 +479,7 @@ LMI_WX_TEST_CASE(validate_output_illustration)
 
             wx_test_focus_controller_child(*dialog, "Comments");
 
-            wxUIActionSimulator ui;
+            UIActionSimulator ui;
             ui.Text("idiosyncrasyZ");
             wxYield();
 
@@ -525,7 +525,7 @@ LMI_WX_TEST_CASE(validate_output_census)
         census_file_name = get_test_file_path_for(corp_name + ".cns");
     output_file_existence_checker output_cns(census_file_name);
 
-    wxUIActionSimulator ui;
+    UIActionSimulator ui;
     ui.Char('a', wxMOD_CONTROL); // "File|Save as"
     wxTEST_DIALOG
         (wxYield()
@@ -565,7 +565,7 @@ LMI_WX_TEST_CASE(validate_output_mec)
     // over and just creating this object satisfies this requirement.
     output_file_existence_checker unnamed_xml("unnamed.mec.xml");
 
-    wxUIActionSimulator ui;
+    UIActionSimulator ui;
     ui.Char('n', wxMOD_CONTROL);    // "File|New"
     ui.Char('m');                   // "MEC testing"
 

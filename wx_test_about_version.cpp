@@ -236,7 +236,7 @@ LMI_WX_TEST_CASE(about_dialog_version)
                     }
             };
 
-            wxUIActionSimulator z;
+            UIActionSimulator z;
             z.Char(WXK_RETURN);
             wxTEST_DIALOG
                 (wxYield()
@@ -252,7 +252,7 @@ LMI_WX_TEST_CASE(about_dialog_version)
             }
     };
 
-    wxUIActionSimulator z;
+    UIActionSimulator z;
     z.Char('h', wxMOD_ALT);
     z.Char('a'           );
     wxTEST_DIALOG
