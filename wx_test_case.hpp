@@ -23,9 +23,12 @@
 #define wx_test_case_hpp
 
 #include "config.hpp"
+#include "mvc_controller.hpp"
 
 #include <boost/filesystem/path.hpp>
 
+#include <wx/testing.h>
+#include <wx/filedlg.h>
 #include <wx/uiaction.h>
 #include <wx/utils.h>
 
@@ -161,5 +164,44 @@ inline void wait_and_yield(int iterations = 10, int milliseconds = 50)
         wxMilliSleep(milliseconds);
         }
 }
+
+class expect_mvc_controller
+    :public wxExpectDismissableModal<MvcController>
+{
+  public:
+    expect_mvc_controller(int id, const wxString& description)
+        :wxExpectDismissableModal<MvcController>(id)
+        {
+        m_description = description;
+        }
+
+  protected:
+    int OnInvoked(MvcController* dlg) const override
+        {
+        int const result = wxExpectDismissableModal<MvcController>::OnInvoked(dlg);
+        wait_and_yield();
+        return result;
+        }
+};
+
+
+class expect_file_dialog
+    :public wxExpectModal<wxFileDialog>
+{
+  public:
+    expect_file_dialog(const wxString& filename, const wxString& description)
+        :wxExpectModal<wxFileDialog>(filename)
+        {
+        m_description = description;
+        }
+
+  protected:
+    int OnInvoked(wxFileDialog* dlg) const override
+        {
+        int const result = wxExpectModal<wxFileDialog>::OnInvoked(dlg);
+        wait_and_yield();
+        return result;
+        }
+};
 
 #endif // wx_test_case_hpp

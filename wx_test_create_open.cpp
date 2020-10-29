@@ -62,23 +62,22 @@ void do_test_create_open
         {
         wxTEST_DIALOG
             (wxYield()
-            ,wxExpectDismissableModal<MvcController>(wxID_OK).
-                Describe("new file properties")
+            ,expect_mvc_controller(wxID_OK, "new file properties")
             );
         }
-    wxYield();
+    wait_and_yield();
 
     z.Char(uses_dialog ? 'a' : 's', wxMOD_CONTROL); // save or save as
     wxTEST_DIALOG
         (wxYield()
-        ,wxExpectModal<wxFileDialog>(file).Describe("save file dialog")
+        ,expect_file_dialog(file, "save file dialog")
         );
-    wxYield();
+    wait_and_yield(20);
 
     LMI_ASSERT(output_file.exists());
 
     z.Char('l', wxMOD_CONTROL); // close document
-    wxYield();
+    wait_and_yield();
 
     z.Char('o', wxMOD_CONTROL); // and open it again
 
@@ -86,22 +85,21 @@ void do_test_create_open
         {
         wxTEST_DIALOG
             (wxYield()
-            ,wxExpectModal<wxFileDialog>(file).Describe("open file dialog")
-            ,wxExpectDismissableModal<MvcController>(wxID_OK).
-                Describe("existing file properties")
+            ,expect_file_dialog(file, "open file dialog")
+            ,expect_mvc_controller(wxID_OK, "existing file properties")
             );
         }
     else
         {
         wxTEST_DIALOG
             (wxYield()
-            ,wxExpectModal<wxFileDialog>(file).Describe("open file dialog")
+            ,expect_file_dialog(file, "open file dialog")
             );
         }
-    wxYield();
+    wait_and_yield();
 
     z.Char('l', wxMOD_CONTROL); // close it finally
-    wxYield();
+    wait_and_yield();
 }
 
 /// Create, save, and reopen a file of each available type.

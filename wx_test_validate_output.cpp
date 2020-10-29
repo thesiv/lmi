@@ -529,9 +529,9 @@ LMI_WX_TEST_CASE(validate_output_census)
     ui.Char('a', wxMOD_CONTROL); // "File|Save as"
     wxTEST_DIALOG
         (wxYield()
-        ,wxExpectModal<wxFileDialog>(census_file_name).
-            Describe("census save file dialog")
+        ,expect_file_dialog(census_file_name, "census save file dialog")
         );
+    wait_and_yield(20);
 
     LMI_ASSERT(output_cns.exists());
 
