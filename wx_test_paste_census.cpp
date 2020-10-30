@@ -297,6 +297,8 @@ LMI_WX_TEST_CASE(paste_census)
             wxYield();
             ui.Char(WXK_DOWN);
             wxYield();
+            ui.Char(WXK_SPACE); // And make it current (required under GTK).
+            wxYield();
 
             LMI_ASSERT_EQUAL(gender_radiobox->GetSelection(), 2);
 
@@ -362,6 +364,8 @@ LMI_WX_TEST_CASE(paste_census)
 
             UIActionSimulator ui;
             ui.Char(WXK_UP); // Select the first, "Preferred", radio button.
+            wxYield();
+            ui.Char(WXK_SPACE); // And make it current (required under GTK).
             wxYield();
 
             LMI_ASSERT_EQUAL(class_radiobox->GetSelection(), 0);
