@@ -159,7 +159,7 @@ jobs:
           ./check_git_setup.sh
 
           # Copy a placeholder logo image.
-          cp ./gwc/company_logo.png /opt/lmi/data/
+          # cp ./gwc/company_logo.png /opt/lmi/data/
 
           # Create authentication files.
           printf '2450449 2472011'                            >/opt/lmi/data/expiry
