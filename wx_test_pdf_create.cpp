@@ -75,7 +75,7 @@ LMI_WX_TEST_CASE(pdf_illustration)
 
             wx_test_focus_controller_child(*dialog, "SpecifiedAmount");
 
-            wxUIActionSimulator ui;
+            UIActionSimulator ui;
             ui.Text("1000000000");
             wxYield();
 
@@ -99,7 +99,7 @@ LMI_WX_TEST_CASE(pdf_illustration)
     // Ensure that the output file doesn't exist in the first place.
     output_pdf_existence_checker output_pdf(get_current_document_name());
 
-    wxUIActionSimulator ui;
+    UIActionSimulator ui;
     ui.Char('i', wxMOD_CONTROL);    // "File | Print to PDF"
     wxYield();
 
@@ -137,7 +137,7 @@ LMI_WX_TEST_CASE(pdf_census)
         cell_pdf(name + serial_suffix(1));
 
     // Print the census to PDF.
-    wxUIActionSimulator ui;
+    UIActionSimulator ui;
     ui.Char('i', wxMOD_CONTROL | wxMOD_SHIFT);  // "Census | Print case to PDF"
     wxYield();
 

@@ -25,10 +25,10 @@
 #include "config.hpp"
 
 #include "mvc_controller.hpp"
+#include "wx_test_case.hpp"
 
 #include <wx/log.h>
 #include <wx/testing.h>
-#include <wx/uiaction.h>
 
 #include <exception>                    // uncaught_exceptions()
 
@@ -128,7 +128,7 @@ class wx_test_document_base
         // it as we clearly didn't forget to do it.
         opened_ = false;
 
-        wxUIActionSimulator ui;
+        UIActionSimulator ui;
         ui.Char('l', wxMOD_CONTROL);    // "File|Close"
     }
 
@@ -148,7 +148,7 @@ class wx_test_existing_illustration
     // Default constructor opens an illustration without changing the parameters.
     explicit wx_test_existing_illustration(std::string const& file_ill)
     {
-        wxUIActionSimulator ui;
+        UIActionSimulator ui;
         ui.Char('o', wxMOD_CONTROL);    // "File|Open"
 
         wxTEST_DIALOG

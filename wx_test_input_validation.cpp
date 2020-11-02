@@ -108,7 +108,7 @@ LMI_WX_TEST_CASE(input_validation)
 
             wx_test_focus_controller_child(*dialog, "CurrentCoiMultiplier");
 
-            wxUIActionSimulator ui;
+            UIActionSimulator ui;
             if(*value_ == '\0')
                 {
                 // Special case of the empty value: we must clear the entry
@@ -149,7 +149,7 @@ LMI_WX_TEST_CASE(input_validation)
         bool check_for_expected_exception = false;
         try
             {
-            wxUIActionSimulator ui;
+            UIActionSimulator ui;
             ui.Char('e', wxMOD_CONTROL); // "Illustration|Edit Cell"
             wxTEST_DIALOG
                 (wxYield()

@@ -236,7 +236,7 @@ LMI_WX_TEST_CASE(paste_census)
     wx_test_new_census census;
 
     // Paste data into it.
-    wxUIActionSimulator ui;
+    UIActionSimulator ui;
     ui.Char('s', wxMOD_CONTROL | wxMOD_SHIFT); // "Census | Paste census"
     wxYield();
 
@@ -290,12 +290,14 @@ LMI_WX_TEST_CASE(paste_census)
                 gender_radiobox = dynamic_cast<wxRadioBox*>(gender_window);
             LMI_ASSERT(gender_radiobox);
 
-            wxUIActionSimulator ui;
+            UIActionSimulator ui;
             // Select the last, "Unisex", radio button, by simulating
             // down-arrow twice: female --> male, then male --> unisex.
             ui.Char(WXK_DOWN);
             wxYield();
             ui.Char(WXK_DOWN);
+            wxYield();
+            ui.Char(WXK_SPACE); // And make it current (required under GTK).
             wxYield();
 
             LMI_ASSERT_EQUAL(gender_radiobox->GetSelection(), 2);
@@ -360,8 +362,10 @@ LMI_WX_TEST_CASE(paste_census)
                 class_radiobox = dynamic_cast<wxRadioBox*>(class_window);
             LMI_ASSERT(class_radiobox);
 
-            wxUIActionSimulator ui;
+            UIActionSimulator ui;
             ui.Char(WXK_UP); // Select the first, "Preferred", radio button.
+            wxYield();
+            ui.Char(WXK_SPACE); // And make it current (required under GTK).
             wxYield();
 
             LMI_ASSERT_EQUAL(class_radiobox->GetSelection(), 0);
@@ -405,8 +409,7 @@ LMI_WX_TEST_CASE(paste_census)
     ui.Char('a', wxMOD_CONTROL);    // "File|Save as"
     wxTEST_DIALOG
         (wxYield()
-        ,wxExpectModal<wxFileDialog>(census_file_name).
-            Describe("census save file dialog")
+        ,expect_file_dialog(census_file_name, "census save file dialog")
         );
 
     LMI_ASSERT(output_cns.exists());

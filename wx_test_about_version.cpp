@@ -196,7 +196,7 @@ LMI_WX_TEST_CASE(about_dialog_version)
             // Finally bring up the dialog showing the license itself: for this
             // we first need to show this dialog itself.
             d->Show();
-            wxYield();
+            wait_and_yield();
 
             // And then press the default button in it which opens the license.
             struct expect_license_dialog : public wxExpectModalBase<wxDialog>
@@ -236,10 +236,10 @@ LMI_WX_TEST_CASE(about_dialog_version)
                     }
             };
 
-            wxUIActionSimulator z;
+            UIActionSimulator z;
             z.Char(WXK_RETURN);
             wxTEST_DIALOG
-                (wxYield()
+                (wait_and_yield()
                 ,expect_license_dialog()
                 );
 
@@ -252,7 +252,7 @@ LMI_WX_TEST_CASE(about_dialog_version)
             }
     };
 
-    wxUIActionSimulator z;
+    UIActionSimulator z;
     z.Char('h', wxMOD_ALT);
     z.Char('a'           );
     wxTEST_DIALOG

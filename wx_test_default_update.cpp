@@ -54,7 +54,7 @@ LMI_WX_TEST_CASE(default_update)
 {
     skip_if_not_distribution();
 
-    wxUIActionSimulator ui;
+    UIActionSimulator ui;
 
     ui.Char('t', wxMOD_CONTROL); // "File|Default"
 
@@ -84,7 +84,7 @@ LMI_WX_TEST_CASE(default_update)
                 }
 
             // Entering the target date into a wxDatePickerCtrl using
-            // wxUIActionSimulator is too difficult: different sequences of
+            // UIActionSimulator is too difficult: different sequences of
             // keys are required depending on the graphical toolkit used and
             // also depending on the current locale, so just cheat and put the
             // date directly into the control.
@@ -101,7 +101,7 @@ LMI_WX_TEST_CASE(default_update)
 
             // We also need to modify some field interactively to make the
             // dialog "notice" that something has changed and even making
-            // wxDatePickerCtrl dirty is difficult using wxUIActionSimulator as
+            // wxDatePickerCtrl dirty is difficult using UIActionSimulator as
             // it has very different keyboard interfaces under MSW and GTK, so
             // reuse the "UseDOB" check or radio box: we don't actually change
             // anything by toggling it twice, but doing this updates the value
@@ -122,7 +122,7 @@ LMI_WX_TEST_CASE(default_update)
         // depending on the skin used.
         static void ToggleUseDOB(wxWindow* usedob_window)
             {
-            wxUIActionSimulator ui;
+            UIActionSimulator ui;
 
             if(dynamic_cast<wxRadioBox*>(usedob_window))
                 {

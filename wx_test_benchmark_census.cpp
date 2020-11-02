@@ -46,7 +46,7 @@ class census_benchmark
         :status_ {get_main_window_statusbar()}
         ,name_   {path.leaf()}
         {
-        wxUIActionSimulator z;
+        UIActionSimulator z;
         z.Char('o', wxMOD_CONTROL); // "File|Open"
         wxTEST_DIALOG
             (wxYield()
@@ -70,7 +70,7 @@ class census_benchmark
         // Clear any status text left over from the previous run.
         status_.SetStatusText(wxString());
 
-        wxUIActionSimulator z;
+        UIActionSimulator z;
         z.Char(key, mod);
         wxYield();
 
@@ -94,7 +94,7 @@ class census_benchmark
 
     void close_window()
         {
-        wxUIActionSimulator z;
+        UIActionSimulator z;
         z.Char('l', wxMOD_CONTROL); // "File|Close"
         }
 

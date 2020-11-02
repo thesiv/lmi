@@ -23,8 +23,14 @@
 #define wx_test_case_hpp
 
 #include "config.hpp"
+#include "mvc_controller.hpp"
 
 #include <boost/filesystem/path.hpp>
+
+#include <wx/testing.h>
+#include <wx/filedlg.h>
+#include <wx/uiaction.h>
+#include <wx/utils.h>
 
 /// Base class for the test case objects.
 ///
@@ -121,5 +127,81 @@ class wx_test_case_##name \
 }; \
 static wx_test_case_##name wx_test_case_##name##_instance; \
 void wx_test_case_##name::run()
+
+/// Encapsulate wx UI action simulator.
+///
+/// Disable wxYield() for the simulated actions to not stuck inside
+/// under GTK3.
+
+class UIActionSimulator
+{
+  public:
+    UIActionSimulator() = default;
+
+    bool MouseMove(long x, long y);
+    bool MouseMove(const wxPoint& point);
+    bool MouseDown(int button = wxMOUSE_BTN_LEFT);
+    bool MouseUp(int button = wxMOUSE_BTN_LEFT);
+    bool MouseClick(int button = wxMOUSE_BTN_LEFT);
+    bool MouseDblClick(int button = wxMOUSE_BTN_LEFT);
+    bool MouseDragDrop(long x1, long y1, long x2, long y2,
+                       int button = wxMOUSE_BTN_LEFT);
+    bool KeyDown(int keycode, int modifiers = wxMOD_NONE);
+    bool KeyUp(int keycode, int modifiers = wxMOD_NONE);
+    bool Char(int keycode, int modifiers = wxMOD_NONE);
+    bool Select(const wxString& text);
+    bool Text(const char* text);
+
+  private:
+    wxUIActionSimulator sim_;
+};
+
+inline void wait_and_yield(int iterations = 10, int milliseconds = 50)
+{
+    for(int i = 0; i < iterations; ++i)
+        {
+        wxYield();
+        wxMilliSleep(milliseconds);
+        }
+}
+
+class expect_mvc_controller
+    :public wxExpectDismissableModal<MvcController>
+{
+  public:
+    expect_mvc_controller(int id, const wxString& description)
+        :wxExpectDismissableModal<MvcController>(id)
+        {
+        m_description = description;
+        }
+
+  protected:
+    int OnInvoked(MvcController* dlg) const override
+        {
+        int const result = wxExpectDismissableModal<MvcController>::OnInvoked(dlg);
+        wait_and_yield();
+        return result;
+        }
+};
+
+
+class expect_file_dialog
+    :public wxExpectModal<wxFileDialog>
+{
+  public:
+    expect_file_dialog(const wxString& filename, const wxString& description)
+        :wxExpectModal<wxFileDialog>(filename)
+        {
+        m_description = description;
+        }
+
+  protected:
+    int OnInvoked(wxFileDialog* dlg) const override
+        {
+        int const result = wxExpectModal<wxFileDialog>::OnInvoked(dlg);
+        wait_and_yield();
+        return result;
+        }
+};
 
 #endif // wx_test_case_hpp
